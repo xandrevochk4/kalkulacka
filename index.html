@@ -4,25 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Model-67 Scientific Precision Computer</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
         :root {
-            --chassis-bg: #18191b;
-            --bezel-bg: #222428;
-            --display-bg: #101113;
-            --screen-text: #d8ded6;
-            --btn-num-bg: #2a2d32;
-            --btn-num-text: #e1e4e8;
-            --btn-func-bg: #353a40;
-            --btn-func-text: #b0b8c0;
-            --btn-accent-bg: #d9531e;
-            --btn-accent-text: #ffffff;
-            --btn-mem-bg: #233238;
-            --btn-mem-text: #7ba8b6;
-            --border-metal: #383d44;
-            --font-stack: 'IBM Plex Mono', 'Courier Prime', monospace;
+            --font-stack: 'IBM Plex Mono', monospace;
         }
 
         body {
@@ -35,27 +23,24 @@
             background-size: 16px 16px;
         }
 
+        /* Tactile physical button styling with press effects */
         .btn-tactile {
-            box-shadow: 0 3px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(255,255,255,0.08);
+            box-shadow: 0 3px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
             transition: transform 0.03s ease, box-shadow 0.03s ease, background-color 0.1s ease;
         }
 
-        .btn-tactile:active, .btn-pressed {
+        .btn-tactile:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(0,0,0,0.3);
+            box-shadow: 0 1px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(0, 0, 0, 0.3);
         }
 
         .paper-tape {
             background-color: #141517;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 0);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0);
             background-size: 100% 20px;
         }
 
-        .crt-overlay {
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
-            background-size: 100% 4px;
-        }
-
+        /* Custom scrollbar for paper tape and display overflow */
         ::-webkit-scrollbar {
             width: 5px;
             height: 5px;
@@ -75,7 +60,7 @@
 
     <main class="w-full max-w-5xl my-auto">
         
-        <!-- Header Spec Plate -->
+        <!-- Header Spec Plate (Without "Back to Dice" button) -->
         <div class="flex justify-between items-end border-b border-[#383d44] pb-2 mb-3 px-1 text-xs text-neutral-400 font-mono tracking-wider">
             <div class="flex items-center gap-3">
                 <span class="font-bold text-neutral-200 tracking-widest">LABORATORY COMPUTER</span>
@@ -87,24 +72,25 @@
             </div>
         </div>
 
-        <!-- Main Assembly -->
+        <!-- Main Assembly Console -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-            <!-- Left Panel: Physical Calculator Console -->
-            <div class="lg:col-span-8 bg-[#18191b] border-2 border-[#383d44] p-4 sm:p-6 shadow-2xl relative">
+            <!-- Left Panel: Physical Calculator Keypad Console -->
+            <div class="lg:col-span-8 bg-[#18191b] border-2 border-[#383d44] p-4 sm:p-6 shadow-2xl relative rounded-sm">
                 
+                <!-- Status & Mode Bar -->
                 <div class="flex flex-wrap justify-between items-center bg-[#101113] border border-[#2c3036] p-2.5 mb-4 text-xs font-mono">
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-2">
                             <span class="text-neutral-500 text-[10px] uppercase font-bold">ANGLE</span>
                             <div class="inline-flex border border-[#383d44] bg-[#18191b] p-0.5">
-                                <button id="btn-deg" class="px-2 py-0.5 text-[11px] font-bold bg-[#d9531e] text-white">DEG</button>
-                                <button id="btn-rad" class="px-2 py-0.5 text-[11px] font-bold text-neutral-400 hover:text-white">RAD</button>
+                                <button id="btn-deg" type="button" class="px-2 py-0.5 text-[11px] font-bold bg-[#d9531e] text-white">DEG</button>
+                                <button id="btn-rad" type="button" class="px-2 py-0.5 text-[11px] font-bold text-neutral-400 hover:text-white">RAD</button>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <button id="btn-2nd" class="px-2.5 py-1 text-[11px] font-bold border border-[#383d44] bg-[#2a2d32] text-neutral-300 hover:bg-[#353a40]">
+                            <button id="btn-2nd" type="button" class="px-2.5 py-1 text-[11px] font-bold border border-[#383d44] bg-[#2a2d32] text-neutral-300 hover:bg-[#353a40]">
                                 <span id="led-2nd" class="inline-block w-1.5 h-1.5 rounded-full bg-neutral-600 mr-1.5"></span>2nd
                             </button>
                         </div>
@@ -116,100 +102,104 @@
                     </div>
                 </div>
 
-                <!-- Primary CRT Display Screen -->
+                <!-- Primary Display Screen -->
                 <div class="bg-[#101113] border-2 border-[#2c3036] p-4 mb-5 text-right font-mono flex flex-col justify-between min-h-[110px] relative shadow-inner">
                     <div id="formula-display" class="text-xs sm:text-sm text-neutral-500 overflow-x-auto whitespace-nowrap min-h-[22px] mb-1 tracking-wide">
                         &nbsp;
                     </div>
 
                     <div class="flex items-baseline justify-end overflow-hidden">
-                        <span id="easter-indicator" class="hidden text-[#d9531e] text-xs font-bold mr-auto self-center border border-[#d9531e]/50 px-1.5 py-0.5">
-                            PROTOCOL 67
-                        </span>
                         <span id="main-display" class="text-3xl sm:text-4xl font-bold text-[#d8ded6] tracking-tight overflow-x-auto whitespace-nowrap">
                             0
                         </span>
                     </div>
                 </div>
 
-                <!-- Keypad Grid Assembly -->
-                <div class="space-y-2.5">
+                <!-- Keypad Grid Container with Global Event Delegation -->
+                <div id="calculator-keypad" class="space-y-2.5">
                     
+                    <!-- Row 1: Memory & Clear -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="mc" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MC</button>
-                        <button data-action="mr" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MR</button>
-                        <button data-action="m-plus" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M+</button>
-                        <button data-action="m-minus" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M-</button>
-                        <button data-action="clear-entry" class="btn-tactile bg-[#353a40] text-amber-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">CE</button>
-                        <button data-action="clear-all" class="btn-tactile bg-[#353a40] text-rose-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">AC</button>
+                        <button data-act="mc" type="button" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MC</button>
+                        <button data-act="mr" type="button" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MR</button>
+                        <button data-act="m-plus" type="button" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M+</button>
+                        <button data-act="m-minus" type="button" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M-</button>
+                        <button data-act="ce" type="button" class="btn-tactile bg-[#353a40] text-amber-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">CE</button>
+                        <button data-act="ac" type="button" class="btn-tactile bg-[#353a40] text-rose-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">AC</button>
                     </div>
 
+                    <!-- Row 2: Trigonometric & Log Functions + Delete -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-func="sin" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">sin</span></button>
-                        <button data-func="cos" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">cos</span></button>
-                        <button data-func="tan" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">tan</span></button>
-                        <button data-func="ln" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">ln</span></button>
-                        <button data-func="log10" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">log</span></button>
-                        <button data-action="delete" class="btn-tactile bg-[#353a40] text-neutral-200 font-bold py-2.5 text-xs sm:text-sm">DEL</button>
+                        <button data-func="sin" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-label">sin</span></button>
+                        <button data-func="cos" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-label">cos</span></button>
+                        <button data-func="tan" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-label">tan</span></button>
+                        <button data-func="ln" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">ln</button>
+                        <button data-func="log" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">log</button>
+                        <button data-act="del" type="button" class="btn-tactile bg-[#353a40] text-neutral-200 font-bold py-2.5 text-xs sm:text-sm">DEL</button>
                     </div>
 
+                    <!-- Row 3: Powers, Roots, Modulo -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-func="sqr" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">x²</span></button>
-                        <button data-operator="pow" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">x^y</span></button>
-                        <button data-func="sqrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">√x</span></button>
-                        <button data-func="cbrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm"><span class="func-primary">∛x</span></button>
-                        <button data-func="fact" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">n!</button>
-                        <button data-operator="mod" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">MOD</button>
+                        <button data-func="sqr" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">x²</button>
+                        <button data-op="^" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">x^y</button>
+                        <button data-func="sqrt" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">√x</button>
+                        <button data-func="cbrt" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">∛x</button>
+                        <button data-func="fact" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">n!</button>
+                        <button data-op="%" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">MOD</button>
                     </div>
 
+                    <!-- Row 4: Constants & Keypad 7-9 & Division -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-const="pi" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">π</button>
-                        <button data-const="e" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">e</button>
-                        <button data-number="7" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">7</button>
-                        <button data-number="8" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">8</button>
-                        <button data-number="9" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">9</button>
-                        <button data-operator="/" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">÷</button>
+                        <button data-val="π" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">π</button>
+                        <button data-val="e" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">e</button>
+                        <button data-val="7" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">7</button>
+                        <button data-val="8" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">8</button>
+                        <button data-val="9" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">9</button>
+                        <button data-op="/" type="button" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">÷</button>
                     </div>
 
+                    <!-- Row 5: Parentheses & Keypad 4-6 & Multiplication -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="paren-open" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">(</button>
-                        <button data-action="paren-close" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">)</button>
-                        <button data-number="4" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">4</button>
-                        <button data-number="5" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">5</button>
-                        <button data-number="6" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">6</button>
-                        <button data-operator="*" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">×</button>
+                        <button data-val="(" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">(</button>
+                        <button data-val=")" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">)</button>
+                        <button data-val="4" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">4</button>
+                        <button data-val="5" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">5</button>
+                        <button data-val="6" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">6</button>
+                        <button data-op="*" type="button" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">×</button>
                     </div>
 
+                    <!-- Row 6: Reciprocal, Abs & Keypad 1-3 & Subtraction -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-func="abs" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">|x|</button>
-                        <button data-func="inv" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">1/x</button>
-                        <button data-number="1" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">1</button>
-                        <button data-number="2" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">2</button>
-                        <button data-number="3" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">3</button>
-                        <button data-operator="-" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">−</button>
+                        <button data-func="abs" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">|x|</button>
+                        <button data-func="inv" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">1/x</button>
+                        <button data-val="1" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">1</button>
+                        <button data-val="2" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">2</button>
+                        <button data-val="3" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">3</button>
+                        <button data-op="-" type="button" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">−</button>
                     </div>
 
+                    <!-- Row 7: Sign, Zero, Decimal, Addition, Equals -->
                     <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="toggle-sign" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-3 text-sm">±</button>
-                        <button data-number="0" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">0</button>
-                        <button data-action="decimal" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">.</button>
-                        <button data-operator="+" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">+</button>
-                        <button data-action="equals" class="col-span-2 btn-tactile bg-[#d9531e] text-white font-bold py-3 text-lg border border-orange-500/30">=</button>
+                        <button data-act="sign" type="button" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-3 text-sm">±</button>
+                        <button data-val="0" type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">0</button>
+                        <button data-val="." type="button" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">.</button>
+                        <button data-op="+" type="button" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">+</button>
+                        <button data-act="equals" type="button" class="col-span-2 btn-tactile bg-[#d9531e] text-white font-bold py-3 text-lg border border-orange-500/30">=</button>
                     </div>
 
                 </div>
 
             </div>
 
-            <!-- Right Panel: Real-Time Paper Tape Ledger -->
-            <div class="lg:col-span-4 bg-[#18191b] border-2 border-[#383d44] p-4 flex flex-col justify-between shadow-2xl">
+            <!-- Right Panel: Real-Time Paper Tape Ledger Log -->
+            <div class="lg:col-span-4 bg-[#18191b] border-2 border-[#383d44] p-4 flex flex-col justify-between shadow-2xl rounded-sm">
                 <div>
                     <div class="flex justify-between items-center border-b border-[#383d44] pb-2 mb-3">
                         <span class="text-xs font-bold text-neutral-300 tracking-wider">PAPER TAPE LEDGER</span>
-                        <button id="btn-clear-tape" class="text-[10px] text-neutral-400 hover:text-white border border-[#383d44] px-1.5 py-0.5">CLEAR TAPE</button>
+                        <button id="btn-clear-tape" type="button" class="text-[10px] text-neutral-400 hover:text-white border border-[#383d44] px-1.5 py-0.5 bg-[#222428]">CLEAR TAPE</button>
                     </div>
                     
-                    <div id="paper-tape" class="paper-tape border border-[#2c3036] p-3 text-xs font-mono text-neutral-300 h-[380px] lg:h-[420px] overflow-y-auto space-y-2 shadow-inner">
+                    <div id="paper-tape" class="paper-tape border border-[#2c3036] p-3 text-xs font-mono text-neutral-300 h-[380px] lg:h-[430px] overflow-y-auto space-y-2 shadow-inner">
                         <div class="text-neutral-600 text-[11px] border-b border-neutral-800 pb-1">-- SYSTEM READY --</div>
                     </div>
                 </div>
@@ -223,385 +213,368 @@
         </div>
     </main>
 
+    <!-- Robust Scientific Calculator Logic Engine -->
     <script>
-        class ScientificCalculator {
-            constructor() {
-                this.mainDisplay = document.getElementById('main-display');
-                this.formulaDisplay = document.getElementById('formula-display');
-                this.paperTape = document.getElementById('paper-tape');
-                this.entryCountEl = document.getElementById('entry-count');
-                this.memIndicator = document.getElementById('mem-indicator');
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Element References
+            const mainDisplay = document.getElementById('main-display');
+            const formulaDisplay = document.getElementById('formula-display');
+            const paperTape = document.getElementById('paper-tape');
+            const entryCountEl = document.getElementById('entry-count');
+            const memIndicator = document.getElementById('mem-indicator');
+            const btnDeg = document.getElementById('btn-deg');
+            const btnRad = document.getElementById('btn-rad');
+            const btn2nd = document.getElementById('btn-2nd');
+            const led2nd = document.getElementById('led-2nd');
 
-                this.resetAll();
-            }
+            // Calculator State Variables
+            let currentInput = '0';
+            let formulaString = '';
+            let memoryValue = 0;
+            let isRadianMode = false;
+            let is2ndActive = false;
+            let entryCount = 0;
+            let shouldResetOnNextInput = false;
 
-            resetAll() {
-                this.currentInput = '0';
-                this.previousOperand = null;
-                this.operator = null;
-                this.waitingForNextOperand = false;
-                this.expressionHistory = '';
-                this.memory = 0;
-                this.isRad = false;
-                this.entryCount = 0;
-                
-                this.updateDisplay();
-                this.updateMemoryIndicator();
-            }
-
-            inputDigit(digit) {
-                if (this.waitingForNextOperand) {
-                    this.currentInput = digit;
-                    this.waitingForNextOperand = false;
-                } else {
-                    this.currentInput = this.currentInput === '0' ? digit : this.currentInput + digit;
+            // Update screen DOM displays unconditionally
+            function updateScreen() {
+                if (mainDisplay) {
+                    mainDisplay.textContent = currentInput || '0';
                 }
-                this.updateDisplay();
-            }
-
-            inputDecimal() {
-                if (this.waitingForNextOperand) {
-                    this.currentInput = '0.';
-                    this.waitingForNextOperand = false;
-                } else if (!this.currentInput.includes('.')) {
-                    this.currentInput += '.';
+                if (formulaDisplay) {
+                    formulaDisplay.textContent = formulaString || '\u00A0';
                 }
-                this.updateDisplay();
             }
 
-            inputConstant(type) {
-                let val = (type === 'pi') ? Math.PI : Math.E;
-                this.currentInput = String(this.formatResult(val));
-                this.waitingForNextOperand = false;
-                this.updateDisplay();
-            }
-
-            handleOperator(op) {
-                const val = parseFloat(this.currentInput);
-
-                if (this.previousOperand === null) {
-                    this.previousOperand = val;
-                } else if (this.operator && !this.waitingForNextOperand) {
-                    const res = this.calculate(this.previousOperand, val, this.operator);
-                    this.currentInput = String(this.formatResult(res));
-                    this.previousOperand = res;
+            // Memory Indicator update helper
+            function updateMemoryDisplay() {
+                if (!memIndicator) return;
+                if (memoryValue !== 0) {
+                    memIndicator.textContent = `MEM: ${formatNumber(memoryValue)}`;
+                    memIndicator.className = 'text-[#7ba8b6] font-bold';
                 } else {
-                    this.previousOperand = val;
+                    memIndicator.textContent = 'MEM: EMPTY';
+                    memIndicator.className = 'text-neutral-600 font-bold';
                 }
-
-                this.waitingForNextOperand = true;
-                this.operator = op;
-                this.expressionHistory = `${this.previousOperand} ${this.formatOpSymbol(op)}`;
-                this.updateDisplay();
             }
 
-            handleParenthesis(type) {
-                if (type === 'open') {
-                    this.expressionHistory += (this.expressionHistory ? ' ' : '') + '(';
+            // Safe formatting of calculation results
+            function formatNumber(num) {
+                if (typeof num === 'string') return num;
+                if (isNaN(num) || !isFinite(num)) return 'Error';
+                // Precision clamping to avoid floating point anomalies like 0.0000000000000002
+                const fixed = Number(Math.round(num + 'e10') + 'e-10');
+                return String(fixed);
+            }
+
+            // Factorial function
+            function factorial(n) {
+                if (n < 0 || !Number.isInteger(n)) return NaN;
+                if (n === 0 || n === 1) return 1;
+                let res = 1;
+                for (let i = 2; i <= n; i++) res *= i;
+                return res;
+            }
+
+            // Paper Tape Log Function
+            function addPaperTapeEntry(expression, result) {
+                if (!paperTape) return;
+                entryCount++;
+                if (entryCountEl) entryCountEl.textContent = `${entryCount} ENTRIES`;
+
+                const entry = document.createElement('div');
+                entry.className = 'border-b border-neutral-800 pb-1 font-mono text-[11px]';
+                entry.innerHTML = `
+                    <div class="text-neutral-500">${expression}</div>
+                    <div class="text-right text-neutral-200 font-bold">= ${result}</div>
+                `;
+                paperTape.appendChild(entry);
+                paperTape.scrollTop = paperTape.scrollHeight;
+            }
+
+            // Primary Math Expression Evaluator
+            function evaluateExpression(expr) {
+                try {
+                    // Replace user-friendly notation with JavaScript math equivalents
+                    let sanitized = expr
+                        .replace(/×/g, '*')
+                        .replace(/÷/g, '/')
+                        .replace(/−/g, '-')
+                        .replace(/π/g, 'Math.PI')
+                        .replace(/\be\b/g, 'Math.E')
+                        .replace(/\^/g, '**')
+                        .replace(/%/g, '%');
+
+                    // Function evaluating context
+                    const toRad = (angle) => isRadianMode ? angle : (angle * Math.PI) / 180;
+                    const fromRad = (val) => isRadianMode ? val : (val * 180) / Math.PI;
+
+                    // Expose math functions to scope
+                    const sin = (x) => Math.sin(toRad(x));
+                    const cos = (x) => Math.cos(toRad(x));
+                    const tan = (x) => Math.tan(toRad(x));
+                    const asin = (x) => fromRad(Math.asin(x));
+                    const acos = (x) => fromRad(Math.acos(x));
+                    const atan = (x) => fromRad(Math.atan(x));
+                    const log = (x) => Math.log10(x);
+                    const ln = (x) => Math.log(x);
+                    const sqrt = (x) => Math.sqrt(x);
+                    const cbrt = (x) => Math.cbrt(x);
+                    const abs = (x) => Math.abs(x);
+
+                    // Safe Function Execution
+                    const evalFn = new Function('sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'log', 'ln', 'sqrt', 'cbrt', 'abs', `return (${sanitized});`);
+                    const val = evalFn(sin, cos, tan, asin, acos, atan, log, ln, sqrt, cbrt, abs);
+
+                    return formatNumber(val);
+                } catch (e) {
+                    return 'Error';
+                }
+            }
+
+            // Append input directly (numbers, constants, brackets, operators)
+            function appendInput(val) {
+                if (currentInput === 'Error' || shouldResetOnNextInput) {
+                    if (['+', '-', '*', '/', '^', '%'].includes(val)) {
+                        currentInput = (currentInput === 'Error' ? '0' : currentInput) + val;
+                    } else {
+                        currentInput = val === '.' ? '0.' : val;
+                    }
+                    shouldResetOnNextInput = false;
                 } else {
-                    this.expressionHistory += ` ${this.currentInput})`;
-                    try {
-                        const sanitized = this.expressionHistory.replace(/×/g, '*').replace(/÷/g, '/').replace(/=/g, '');
-                        const res = Function(`"use strict"; return (${sanitized})`)();
-                        this.currentInput = String(this.formatResult(res));
-                    } catch (e) {
-                        this.currentInput = 'Error';
+                    if (currentInput === '0' && val !== '.' && !['+', '-', '*', '/', '^', '%'].includes(val)) {
+                        currentInput = val;
+                    } else {
+                        currentInput += val;
                     }
                 }
-                this.updateDisplay();
+                updateScreen();
             }
 
-            calculate(a, b, op) {
-                switch(op) {
-                    case '+': return a + b;
-                    case '-': return a - b;
-                    case '*': return a * b;
-                    case '/': return b !== 0 ? a / b : 'Error';
-                    case 'pow': return Math.pow(a, b);
-                    case 'mod': return a % b;
-                    default: return b;
+            // Execute immediate single-argument scientific functions
+            function applyFunction(fnName) {
+                let currentNum = parseFloat(currentInput);
+                let result = 'Error';
+                let label = `${fnName}(${currentInput})`;
+
+                const toRad = (angle) => isRadianMode ? angle : (angle * Math.PI) / 180;
+                const fromRad = (val) => isRadianMode ? val : (val * 180) / Math.PI;
+
+                if (!isNaN(currentNum) || ['pi', 'e'].includes(currentInput)) {
+                    switch (fnName) {
+                        case 'sin':
+                            result = is2ndActive ? fromRad(Math.asin(currentNum)) : Math.sin(toRad(currentNum));
+                            label = is2ndActive ? `asin(${currentInput})` : `sin(${currentInput})`;
+                            break;
+                        case 'cos':
+                            result = is2ndActive ? fromRad(Math.acos(currentNum)) : Math.cos(toRad(currentNum));
+                            label = is2ndActive ? `acos(${currentInput})` : `cos(${currentInput})`;
+                            break;
+                        case 'tan':
+                            result = is2ndActive ? fromRad(Math.atan(currentNum)) : Math.tan(toRad(currentNum));
+                            label = is2ndActive ? `atan(${currentInput})` : `tan(${currentInput})`;
+                            break;
+                        case 'ln':
+                            result = Math.log(currentNum);
+                            break;
+                        case 'log':
+                            result = Math.log10(currentNum);
+                            break;
+                        case 'sqr':
+                            result = Math.pow(currentNum, 2);
+                            label = `(${currentInput})²`;
+                            break;
+                        case 'sqrt':
+                            result = Math.sqrt(currentNum);
+                            label = `√(${currentInput})`;
+                            break;
+                        case 'cbrt':
+                            result = Math.cbrt(currentNum);
+                            label = `∛(${currentInput})`;
+                            break;
+                        case 'fact':
+                            result = factorial(currentNum);
+                            label = `${currentInput}!`;
+                            break;
+                        case 'abs':
+                            result = Math.abs(currentNum);
+                            label = `|${currentInput}|`;
+                            break;
+                        case 'inv':
+                            result = currentNum !== 0 ? 1 / currentNum : 'Error';
+                            label = `1/(${currentInput})`;
+                            break;
+                    }
+
+                    const formattedRes = formatNumber(result);
+                    addPaperTapeEntry(label, formattedRes);
+                    currentInput = String(formattedRes);
+                    shouldResetOnNextInput = true;
+                    updateScreen();
                 }
             }
 
-            evaluateEquals() {
-                if (this.operator === null || this.previousOperand === null) {
-                    return;
+            // Handle memory actions
+            function handleMemory(act) {
+                const num = parseFloat(currentInput) || 0;
+                switch (act) {
+                    case 'mc':
+                        memoryValue = 0;
+                        break;
+                    case 'mr':
+                        currentInput = String(formatNumber(memoryValue));
+                        shouldResetOnNextInput = true;
+                        break;
+                    case 'm-plus':
+                        memoryValue += num;
+                        break;
+                    case 'm-minus':
+                        memoryValue -= num;
+                        break;
                 }
-
-                const currentVal = parseFloat(this.currentInput);
-                const result = this.calculate(this.previousOperand, currentVal, this.operator);
-
-                const fullExpr = `${this.previousOperand} ${this.formatOpSymbol(this.operator)} ${currentVal}`;
-                const formattedRes = this.formatResult(result);
-
-                this.logToPaperTape(fullExpr, formattedRes);
-
-                this.expressionHistory = `${fullExpr} =`;
-                this.currentInput = String(formattedRes);
-                this.previousOperand = null;
-                this.operator = null;
-                this.waitingForNextOperand = true;
-
-                this.updateDisplay();
+                updateMemoryDisplay();
+                updateScreen();
             }
 
-            handleFunction(fn) {
-                let val = parseFloat(this.currentInput);
-                let res = 0;
-                let exprLabel = `${fn}(${val})`;
+            // Global Keypad Event Delegation Receiver
+            const keypad = document.getElementById('calculator-keypad');
+            if (keypad) {
+                keypad.addEventListener('click', (e) => {
+                    const btn = e.target.closest('button');
+                    if (!btn) return;
 
-                const toRad = (angle) => this.isRad ? angle : (angle * Math.PI) / 180;
+                    const val = btn.getAttribute('data-val');
+                    const op = btn.getAttribute('data-op');
+                    const func = btn.getAttribute('data-func');
+                    const act = btn.getAttribute('data-act');
 
-                switch(fn) {
-                    case 'sin': res = Math.sin(toRad(val)); break;
-                    case 'cos': res = Math.cos(toRad(val)); break;
-                    case 'tan': res = Math.tan(toRad(val)); break;
-                    case 'ln': res = Math.log(val); break;
-                    case 'log10': res = Math.log10(val); break;
-                    case 'sqr': res = Math.pow(val, 2); break;
-     8] font-bold py-3 text-base">7</button>
-                        <button data-number="8" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">8</button>
-                        <button data-number="9" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">9</button>
-                        <button data-operator="/" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">÷</button>
-                    </div>
+                    // 1. Direct Values (Digits, decimal, pi, e, brackets)
+                    if (val !== null) {
+                        appendInput(val);
+                        return;
+                    }
 
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="paren-open" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">(</button>
-                        <button data-action="paren-close" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">)</button>
-                        <button data-number="4" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">4</button>
-                        <button data-number="5" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">5</button>
-                        <button data-number="6" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">6</button>
-                        <button data-operator="*" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">×</button>
-                    </div>
+                    // 2. Operators (+, -, *, /, ^, %)
+                    if (op !== null) {
+                        appendInput(op);
+                        return;
+                    }
 
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-func="abs" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">|x|</button>
-                        <button data-func="inv" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">1/x</button>
-                        <button data-number="1" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">1</button>
-                        <button data-number="2" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">2</button>
-                        <button data-number="3" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">3</button>
-                        <button data-operator="-" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">−</button>
-                    </div>
+                    // 3. Scientific Functions
+                    if (func !== null) {
+                        applyFunction(func);
+                        return;
+                    }
 
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="toggle-sign" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-3 text-sm">±</button>
-                        <button data-number="0" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">0</button>
-                        <button data-action="decimal" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">.</button>
-                        <button data-operator="+" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">+</button>
-                        <button data-action="equals" class="col-span-2 btn-tactile bg-[#d9531e] text-white font-bold py-3 text-lg border border-orange-500/30">=</button>
-                    </div>
+                    // 4. Special Actions
+                    if (act !== null) {
+                        switch (act) {
+                            case 'ac':
+                                currentInput = '0';
+                                formulaString = '';
+                                updateScreen();
+                                break;
+                            case 'ce':
+                                currentInput = '0';
+                                updateScreen();
+                                break;
+                            case 'del':
+                                if (shouldResetOnNextInput) {
+                                    currentInput = '0';
+                                    shouldResetOnNextInput = false;
+                                } else if (currentInput.length > 1) {
+                                    currentInput = currentInput.slice(0, -1);
+                                } else {
+                                    currentInput = '0';
+                                }
+                                updateScreen();
+                                break;
+                            case 'sign':
+                                if (currentInput !== '0' && currentInput !== 'Error') {
+                                    if (currentInput.startsWith('-')) {
+                                        currentInput = currentInput.slice(1);
+                                    } else {
+                                        currentInput = '-' + currentInput;
+                                    }
+                                    updateScreen();
+                                }
+                                break;
+                            case 'equals':
+                                if (currentInput) {
+                                    const result = evaluateExpression(currentInput);
+                                    formulaString = `${currentInput} =`;
+                                    addPaperTapeEntry(currentInput, result);
+                                    currentInput = String(result);
+                                    shouldResetOnNextInput = true;
+                                    updateScreen();
+                                }
+                                break;
+                            case 'mc':
+                            case 'mr':
+                            case 'm-plus':
+                            case 'm-minus':
+                                handleMemory(act);
+                                break;
+                        }
+                    }
+                });
+            }
 
-                </div>
+            // Mode Toggle Handlers
+            if (btnDeg && btnRad) {
+                btnDeg.addEventListener('click', () => {
+                    isRadianMode = false;
+                    btnDeg.className = "px-2 py-0.5 text-[11px] font-bold bg-[#d9531e] text-white";
+                    btnRad.className = "px-2 py-0.5 text-[11px] font-bold text-neutral-400 hover:text-white";
+                });
 
-            </div>
+                btnRad.addEventListener('click', () => {
+                    isRadianMode = true;
+                    btnRad.className = "px-2 py-0.5 text-[11px] font-bold bg-[#d9531e] text-white";
+                    btnDeg.className = "px-2 py-0.5 text-[11px] font-bold text-neutral-400 hover:text-white";
+                });
+            }
 
-            <!-- Right Panel: Real-Time Paper Tape Ledger -->
-            <div class="lg:col-span-4 bg-[#18191b] border-2 border-[#383d44] p-4 flex flex-col justify-between shadow-2xl">
-                <div>
-                    <div class="flex justify-between items-center border-b border-[#383d44] pb-2 mb-3">
-                        <span class="text-xs font-bold text-neutral-300 tracking-wider">PAPER TAPE LEDGER</span>
-                        <button id="btn-clear-tape" class="text-[10px] text-neutral-400 hover:text-white border border-[#383d44] px-1.5 py-0.5">CLEAR TAPE</button>
-                    </div>
+            // 2nd Function Toggle Handler
+            if (btn2nd && led2nd) {
+                btn2nd.addEventListener('click', () => {
+                    is2ndActive = !is2ndActive;
+                    led2nd.className = is2ndActive 
+                        ? "inline-block w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5 shadow-[0_0_6px_#fbbf24]" 
+                        : "inline-block w-1.5 h-1.5 rounded-full bg-neutral-600 mr-1.5";
                     
-                    <div id="paper-tape" class="paper-tape border border-[#2c3036] p-3 text-xs font-mono text-neutral-300 h-[380px] lg:h-[420px] overflow-y-auto space-y-2 shadow-inner">
-                        <div class="text-neutral-600 text-[11px] border-b border-neutral-800 pb-1">-- SYSTEM READY --</div>
-                    </div>
-                </div>
-
-                <div class="mt-3 pt-2 border-t border-[#383d44] text-[10px] text-neutral-500 flex justify-between">
-                    <span>ENTRY LOG: ACTIVE</span>
-                    <span id="entry-count">0 ENTRIES</span>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <script>
-        class ScientificCalculator {
-            constructor() {
-                this.mainDisplay = document.getElementById('main-display');
-                this.formulaDisplay = document.getElementById('formula-display');
-                this.paperTape = document.getElementById('paper-tape');
-                this.entryCountEl = document.getElementById('entry-count');
-                this.memIndicator = document.getElementById('mem-indicator');
-
-                this.resetAll();
-            }
-
-            resetAll() {
-                this.currentInput = '0';
-                this.previousOperand = null;
-                this.operator = null;
-                this.waitingForNextOperand = false;
-                this.expressionHistory = '';
-                this.memory = 0;
-                this.isRad = false;
-                this.entryCount = 0;
-                
-                this.updateDisplay();
-                this.updateMemoryIndicator();
-            }
-
-            inputDigit(digit) {
-                if (this.waitingForNextOperand) {
-                    this.currentInput = digit;
-                    this.waitingForNextOperand = false;
-                } else {
-                    this.currentInput = this.currentInput === '0' ? digit : this.currentInput + digit;
-                }
-                this.updateDisplay();
-            }
-
-            inputDecimal() {
-                if (this.waitingForNextOperand) {
-                    this.currentInput = '0.';
-                    this.waitingForNextOperand = false;
-                } else if (!this.currentInput.includes('.')) {
-                    this.currentInput += '.';
-                }
-                this.updateDisplay();
-            }
-
-            inputConstant(type) {
-                let val = (type === 'pi') ? Math.PI : Math.E;
-                this.currentInput = String(this.formatResult(val));
-                this.waitingForNextOperand = false;
-                this.updateDisplay();
-            }
-
-            handleOperator(op) {
-                const val = parseFloat(this.currentInput);
-
-                if (this.previousOperand === null) {
-                    this.previousOperand = val;
-                } else if (this.operator && !this.waitingForNextOperand) {
-                    const res = this.calculate(this.previousOperand, val, this.operator);
-                    this.currentInput = String(this.formatResult(res));
-                    this.previousOperand = res;
-                } else {
-                    this.previousOperand = val;
-                }
-
-                this.waitingForNextOperand = true;
-                this.operator = op;
-                this.expressionHistory = `${this.previousOperand} ${this.formatOpSymbol(op)}`;
-                this.updateDisplay();
-            }
-
-            handleParenthesis(type) {
-                if (type === 'open') {
-                    this.expressionHistory += (this.expressionHistory ? ' ' : '') + '(';
-                } else {
-                    this.expressionHistory += ` ${this.currentInput})`;
-                    try {
-                        const sanitized = this.expressionHistory.replace(/×/g, '*').replace(/÷/g, '/').replace(/=/g, '');
-                        const res = Function(`"use strict"; return (${sanitized})`)();
-                        this.currentInput = String(this.formatResult(res));
-                    } catch (e) {
-                        this.currentInput = 'Error';
+                    // Toggle function label display
+                    const funcLabels = document.querySelectorAll('.func-label');
+                    if (is2ndActive) {
+                        funcLabels.forEach(el => {
+                            if (el.textContent === 'sin') el.textContent = 'asin';
+                            if (el.textContent === 'cos') el.textContent = 'acos';
+                            if (el.textContent === 'tan') el.textContent = 'atan';
+                        });
+                    } else {
+                        funcLabels.forEach(el => {
+                            if (el.textContent === 'asin') el.textContent = 'sin';
+                            if (el.textContent === 'acos') el.textContent = 'cos';
+                            if (el.textContent === 'atan') el.textContent = 'tan';
+                        });
                     }
-                }
-                this.updateDisplay();
+                });
             }
 
-            calculate(a, b, op) {
-                switch(op) {
-                    case '+': return a + b;
-                    case '-': return a - b;
-                    case '*': return a * b;
-                    case '/': return b !== 0 ? a / b : 'Error';
-                    case 'pow': return Math.pow(a, b);
-                    case 'mod': return a % b;
-                    default: return b;
-                }
+            // Clear Paper Tape Handler
+            const clearTapeBtn = document.getElementById('btn-clear-tape');
+            if (clearTapeBtn && paperTape) {
+                clearTapeBtn.addEventListener('click', () => {
+                    paperTape.innerHTML = '<div class="text-neutral-600 text-[11px] border-b border-neutral-800 pb-1">-- TAPE CLEARED --</div>';
+                    entryCount = 0;
+                    if (entryCountEl) entryCountEl.textContent = '0 ENTRIES';
+                });
             }
 
-            evaluateEquals() {
-                if (this.operator === null || this.previousOperand === null) {
-                    return;
-                }
-
-                const currentVal = parseFloat(this.currentInput);
-                const result = this.calculate(this.previousOperand, currentVal, this.operator);
-
-                const fullExpr = `${this.previousOperand} ${this.formatOpSymbol(this.operator)} ${currentVal}`;
-                const formattedRes = this.formatResult(result);
-
-                this.logToPaperTape(fullExpr, formattedRes);
-
-                this.expressionHistory = `${fullExpr} =`;
-                this.currentInput = String(formattedRes);
-                this.previousOperand = null;
-                this.operator = null;
-                this.waitingForNextOperand = true;
-
-                this.updateDisplay();
-            }
-
-            handleFunction(fn) {
-                let val = parseFloat(this.currentInput);
-                let res = 0;
-                let exprLabel = `${fn}(${val})`;
-
-                const toRad = (angle) => this.isRad ? angle : (angle * Math.PI) / 180;
-
-                switch(fn) {
-                    case 'sin': res = Math.sin(toRad(val)); break;
-                    case 'cos': res = Math.cos(toRad(val)); break;
-                    case 'tan': res = Math.tan(toRad(val)); break;
-                    case 'ln': res = Math.log(val); break;
-                    case 'log10': res = Math.log10(val); break;
-                    case 'sqr': res = Math.pow(val, 2); break;
-     -tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
-                            <span class="func-primary">x²</span>
-                        </button>
-                        <button data-operator="pow" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
-                            <span class="func-primary">x^y</span>
-                        </button>
-                        <button data-func="sqrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
-                            <span class="func-primary">√x</span>
-                        </button>
-                        <button data-func="cbrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
-                            <span class="func-primary">∛x</span>
-                        </button>
-                        <button data-func="fact" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">n!</button>
-                        <button data-operator="mod" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">MOD</button>
-                    </div>
-
-                    <!-- Row 4: Keypad Digits & Arithmetic 1 -->
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-const="pi" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">π</button>
-                        <button data-const="e" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">e</button>
-                        <button data-number="7" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">7</button>
-                        <button data-number="8" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">8</button>
-                        <button data-number="9" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">9</button>
-                        <button data-operator="/" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">÷</button>
-                    </div>
-
-                    <!-- Row 5: Keypad Digits & Arithmetic 2 -->
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="paren-open" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">(</button>
-                        <button data-action="paren-close" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">)</button>
-                        <button data-number="4" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">4</button>
-                        <button data-number="5" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">5</button>
-                        <button data-number="6" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">6</button>
-                        <button data-operator="*" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">×</button>
-                    </div>
-
-                    <!-- Row 6: Keypad Digits & Arithmetic 3 -->
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-func="abs" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">|x|</button>
-                        <button data-func="inv" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">1/x</button>
-                        <button data-number="1" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">1</button>
-                        <button data-number="2" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">2</button>
-                        <button data-number="3" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">3</button>
-                        <button data-operator="-" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">−</button>
-                    </div>
-
-                    <!-- Row 7: Bottom Action Row -->
-                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-                        <button data-action="toggle-sign" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-3 text-sm">±</button>
-                        <button data-number="0" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">0</button>
-                        <button data-action="decimal" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">.</button>
-                        <button data-operator="+"
+            // Initial display update
+            updateScreen();
+            updateMemoryDisplay();
+        });
+    </script>
+</body>
+</html>
