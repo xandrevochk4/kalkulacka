@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hrací kostka</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        select {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .dice {
+            width: 80px;
+            height: 80px;
+            background-color: #ffffff;
+            border: 3px solid #333;
+            border-radius: 14px;
+            font-size: 38px;
+            font-weight: bold;
+            color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            user-select: none;
+            transition: transform 0.15s ease-in-out;
+        }
+
+        .rolling {
+            animation: roll 0.4s ease-in-out;
+        }
+
+        @keyframes roll {
+            0% { transform: rotate(0deg) scale(0.9); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .result-sum {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+            min-height: 24px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            flex: 1;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background-color: #6c757d;
+        }
+
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .stats-panel {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #666;
+            text-align: left;
+        }
+
+        .stats-panel div {
+            margin-bottom: 5px;
+        }
+
+        .history {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+            text-align: left;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .history-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hrací kostka</h1>
+        
+        <div class="controls">
+            <label for="diceCount">Počet kostek:</label>
+            <select id="diceCount" onchange="zmenPocetKostek()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+        <div id="diceContainer" class="dice-container">
+            <div class="dice">?</div>
+        </div>
+
+        <div id="resultSum" class="result-sum"></div>
+        
+        <div class="button-group">
+            <button id="rollBtn" onclick="hodKostkou()">Hodit</button>
+            <button class="secondary" onclick="vynulovat()">Vynulovat</button>
+        </div>
+
+        <div class="stats-panel">
+            <div>Celkem hodů: <strong id="totalRolls">0</strong></div>
+            <div>Průměrný součet: <strong id="avgSum">0</strong></div>
+        </div>
+
+        <div class="history">
+            <div class="history-title">Historie hodů:</div>
+            <ol id="historyList" class="history-list"></ol>
+        </div>
+    </div>
+
+    <script>
+        let celkovyPocetHodů = 0;
+        let celkovySoucet = 0;
+
+        function zmenPocetKostek() {
+            const pocet = parseInt(document.getElementById("diceCount").value);
+            const container = document.getElementById("diceContainer");
+            container.innerHTML = "";
+            
+            for (let i = 0; i < pocet; i++) {
+                const dice = document.createElement("div");
+                dice.className = "dice";
+                dice.textContent = "?";
+                container.appendChild(dice);
+            }
+            document.getElementById("resultSum").textContent = "";
+        }
+
+        function hodKostkou() {
+            const diceElements = document.querySelectorAll(".dice");
+            const btn = document.getElementById("rollBtn");
+            const historyList = document.getElementById("historyList");
+            const resultSum = document.getElementById("resultSum");
+
+            btn.disabled = true;
+
+            diceElements.forEach(el => el.classList.add("rolling"));
+
+            let counter = 0;
+            const interval = setInterval(() => {
+                diceElements.forEach(el => {
+                    el.textContent = Math.floor(Math.random() * 6) + 1;
+                });
+                counter++;
+                if (counter > 5) {
+                    clearInterval(interval);
+                }
+            }, 60);
+
+            setTimeout(() => {
+                let soucet = 0;
+                const vysledky = [];
+
+                diceElements.forEach(el => {
+                    const cislo = Math.floor(Math.random() * 6) + 1;
+                    el.textContent = cislo;
+                    el.classList.remove("rolling");
+                    vysledky.push(cislo);
+                    soucet += cislo;
+                });
+
+                btn.disabled = false;
+
+                if (diceElements.length > 1) {
+                    resultSum.textContent = `Součet: ${soucet}`;
+                } else {
+                    resultSum.textContent = "";
+                }
+
+                // Aktualizace statistik
+                celkovyPocetHodů++;
+                celkovySoucet += soucet;
+                document.getElementById("totalRolls").textContent = celkovyPocetHodů;
+                document.getElementById("avgSum").textContent = (celkovySoucet / celkovyPocetHodů).toFixed(1);
+
+                // Přidání do historie
+                const li = document.createElement("li");
+                li.textContent = vysledky.join(" + ") + (diceElements.length > 1 ? ` = ${soucet}` : "");
+                historyList.insertBefore(li, historyList.firstChild);
+
+                if (historyList.children.length > 10) {
+                    historyList.removeChild(historyList.lastChild);
+                }
+            }, 400);
+        }
+
+        function vynulovat() {
+            celkovyPocetHodů = 0;
+            celkovySoucet = 0;
+            document.getElementById("totalRolls").textContent = "0";
+            document.getElementById("avgSum").textContent = "0";
+            document.getElementById("historyList").innerHTML = "";
+            document.getElementById("resultSum").textContent = "";
+            
+            const diceElements = document.querySelectorAll(".dice");
+            diceElements.forEach(el => el.textContent = "?");
+        }
+    </script>
+<a href="dva.html" style="
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f67c5f 0%, #edc22e 100%);
+  color: #ffffff;
+  padding: 14px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(246, 124, 95, 0.3);
+  transition: all 0.25s ease;
+" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(246, 124, 95, 0.4)'" 
+   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(246, 124, 95, 0.3)'">
+  🎮 Play 2048
+</a>
+<a href="calc.html" style="
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f67c5f 0%, #edc22e 100%);
+  color: #ffffff;
+  padding: 14px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(246, 124, 95, 0.3);
+  transition: all 0.25s ease;
+" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(246, 124, 95, 0.4)'" 
+   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(246, 124, 95, 0.3)'">
+  really useful calculator!!!1!!!
+</a>
+</body>
+</html>
