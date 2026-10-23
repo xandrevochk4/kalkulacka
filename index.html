@@ -1,331 +1,238 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hrací kostka</title>
+    <title>Model-67 Scientific Precision Computer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+        :root {
+            --chassis-bg: #18191b;
+            --bezel-bg: #222428;
+            --display-bg: #101113;
+            --screen-text: #d8ded6;
+            --btn-num-bg: #2a2d32;
+            --btn-num-text: #e1e4e8;
+            --btn-func-bg: #353a40;
+            --btn-func-text: #b0b8c0;
+            --btn-accent-bg: #d9531e;
+            --btn-accent-text: #ffffff;
+            --btn-mem-bg: #233238;
+            --btn-mem-text: #7ba8b6;
+            --border-metal: #383d44;
+            --font-stack: 'IBM Plex Mono', 'Courier Prime', monospace;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .container {
-            background-color: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 360px;
-        }
-
-        h1 {
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #555;
-        }
-
-        select {
-            padding: 5px 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        .dice-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .dice {
-            width: 80px;
-            height: 80px;
-            background-color: #ffffff;
-            border: 3px solid #333;
-            border-radius: 14px;
-            font-size: 38px;
-            font-weight: bold;
-            color: #222;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #0f1012;
+            color: #d1d5db;
+            font-family: var(--font-stack);
             user-select: none;
-            transition: transform 0.15s ease-in-out;
+            -webkit-user-select: none;
+            background-image: radial-gradient(#22252a 1px, transparent 0);
+            background-size: 16px 16px;
         }
 
-        .rolling {
-            animation: roll 0.4s ease-in-out;
+        /* Tactile Key Press Behavior */
+        .btn-tactile {
+            box-shadow: 0 3px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(255,255,255,0.08);
+            transition: transform 0.03s ease, box-shadow 0.03s ease, background-color 0.1s ease;
         }
 
-        @keyframes roll {
-            0% { transform: rotate(0deg) scale(0.9); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(1); }
+        .btn-tactile:active, .btn-pressed {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 0 #0d0e0f, inset 0 1px 0 0 rgba(0,0,0,0.3);
         }
 
-        .result-sum {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin: 10px 0;
-            min-height: 24px;
+        .led-indicator {
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 0 4px currentColor;
         }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+        /* Paper Tape Custom Styling */
+        .paper-tape {
+            background-color: #141517;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 0);
+            background-size: 100% 20px;
         }
 
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            flex: 1;
+        /* CRT / Scanline Diagnostic Effect */
+        .crt-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.3) 50%
+            );
+            background-size: 100% 4px;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        /* Custom Scrollbar for Ledger */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
-
-        button:active {
-            transform: scale(0.96);
+        ::-webkit-scrollbar-track {
+            background: #141517;
         }
-
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+        ::-webkit-scrollbar-thumb {
+            background: #383d44;
         }
-
-        button.secondary {
-            background-color: #6c757d;
-        }
-
-        button.secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .stats-panel {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            font-size: 13px;
-            color: #666;
-            text-align: left;
-        }
-
-        .stats-panel div {
-            margin-bottom: 5px;
-        }
-
-        .history {
-            margin-top: 15px;
-            font-size: 13px;
-            color: #666;
-            text-align: left;
-            max-height: 80px;
-            overflow-y: auto;
-        }
-
-        .history-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .history-list {
-            margin: 0;
-            padding-left: 20px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b525d;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-center items-center p-2 sm:p-6 overflow-x-hidden">
 
-    <div class="container">
-        <h1>Hrací kostka</h1>
+    <main class="w-full max-w-5xl my-auto">
         
-        <div class="controls">
-            <label for="diceCount">Počet kostek:</label>
-            <select id="diceCount" onchange="zmenPocetKostek()">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select>
+        <!-- Header Spec Plate -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-[#383d44] pb-2 mb-3 px-1 text-xs text-neutral-400 font-mono tracking-wider gap-2">
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-neutral-200 tracking-widest">LABORATORY COMPUTER</span>
+                <span class="text-[10px] bg-[#222428] border border-[#383d44] px-1.5 py-0.5 text-neutral-400">SER. 67-0091A</span>
+            </div>
+            <div class="flex items-center gap-4 text-[11px]">
+                <a href="index.html" class="text-amber-400 hover:text-amber-300 font-bold border border-amber-500/30 px-2 py-0.5 bg-[#222428] transition-colors">← BACK TO DICE</a>
+                <span class="hidden sm:inline text-neutral-500">RESONANCE: 670Hz</span>
+            </div>
         </div>
 
-        <div id="diceContainer" class="dice-container">
-            <div class="dice">?</div>
-        </div>
+        <!-- Main Assembly (Asymmetric Two-Column Layout) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-        <div id="resultSum" class="result-sum"></div>
-        
-        <div class="button-group">
-            <button id="rollBtn" onclick="hodKostkou()">Hodit</button>
-            <button class="secondary" onclick="vynulovat()">Vynulovat</button>
-        </div>
+            <!-- Left Panel: Physical Calculator Console (8 cols) -->
+            <div class="lg:col-span-8 bg-[#18191b] border-2 border-[#383d44] p-4 sm:p-6 shadow-2xl relative">
+                
+                <!-- Top Status Strip & Physical Mode Toggle Switches -->
+                <div class="flex flex-wrap justify-between items-center bg-[#101113] border border-[#2c3036] p-2.5 mb-4 text-xs font-mono">
+                    <div class="flex items-center gap-4">
+                        <!-- Mode Switch: DEG / RAD -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-neutral-500 text-[10px] uppercase font-bold">ANGLE</span>
+                            <div class="inline-flex border border-[#383d44] bg-[#18191b] p-0.5">
+                                <button id="btn-deg" class="px-2 py-0.5 text-[11px] font-bold bg-[#d9531e] text-white">DEG</button>
+                                <button id="btn-rad" class="px-2 py-0.5 text-[11px] font-bold text-neutral-400 hover:text-white">RAD</button>
+                            </div>
+                        </div>
 
-        <div class="stats-panel">
-            <div>Celkem hodů: <strong id="totalRolls">0</strong></div>
-            <div>Průměrný součet: <strong id="avgSum">0</strong></div>
-        </div>
+                        <!-- 2nd Function Toggle -->
+                        <div class="flex items-center gap-2">
+                            <button id="btn-2nd" class="px-2.5 py-1 text-[11px] font-bold border border-[#383d44] bg-[#2a2d32] text-neutral-300 hover:bg-[#353a40]">
+                                <span id="led-2nd" class="inline-block w-1.5 h-1.5 rounded-full bg-neutral-600 mr-1.5"></span>2nd
+                            </button>
+                        </div>
+                    </div>
 
-        <div class="history">
-            <div class="history-title">Historie hodů:</div>
-            <ol id="historyList" class="history-list"></ol>
-        </div>
-    </div>
+                    <!-- Status Display Indicator -->
+                    <div class="flex items-center gap-3 mt-2 sm:mt-0 text-[11px]">
+                        <span id="mem-indicator" class="text-neutral-600 font-bold">MEM: EMPTY</span>
+                        <span id="status-tag" class="text-neutral-400 border border-[#2a2d32] px-1.5 py-0.5">READY</span>
+                    </div>
+                </div>
 
-    <script>
-        let celkovyPocetHodů = 0;
-        let celkovySoucet = 0;
+                <!-- Primary CRT Display Screen -->
+                <div class="bg-[#101113] border-2 border-[#2c3036] p-4 mb-5 text-right font-mono flex flex-col justify-between min-h-[110px] relative shadow-inner">
+                    <!-- Upper Calculation Ledger Line -->
+                    <div id="formula-display" class="text-xs sm:text-sm text-neutral-500 overflow-x-auto whitespace-nowrap min-h-[22px] mb-1 tracking-wide">
+                        &nbsp;
+                    </div>
 
-        function zmenPocetKostek() {
-            const pocet = parseInt(document.getElementById("diceCount").value);
-            const container = document.getElementById("diceContainer");
-            container.innerHTML = "";
-            
-            for (let i = 0; i < pocet; i++) {
-                const dice = document.createElement("div");
-                dice.className = "dice";
-                dice.textContent = "?";
-                container.appendChild(dice);
-            }
-            document.getElementById("resultSum").textContent = "";
-        }
+                    <!-- Main Numeric Output Line -->
+                    <div class="flex items-baseline justify-end overflow-hidden">
+                        <span id="easter-indicator" class="hidden text-[#d9531e] text-xs font-bold mr-auto self-center border border-[#d9531e]/50 px-1.5 py-0.5">
+                            PROTOCOL 67
+                        </span>
+                        <span id="main-display" class="text-3xl sm:text-4xl font-bold text-[#d8ded6] tracking-tight overflow-x-auto whitespace-nowrap">
+                            0
+                        </span>
+                    </div>
+                </div>
 
-        function hodKostkou() {
-            const diceElements = document.querySelectorAll(".dice");
-            const btn = document.getElementById("rollBtn");
-            const historyList = document.getElementById("historyList");
-            const resultSum = document.getElementById("resultSum");
+                <!-- Keypad Grid Assembly -->
+                <div class="space-y-2.5">
+                    
+                    <!-- Row 1: Memory Controls & Clearing -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-action="mc" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MC</button>
+                        <button data-action="mr" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">MR</button>
+                        <button data-action="m-plus" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M+</button>
+                        <button data-action="m-minus" class="btn-tactile bg-[#233238] text-[#7ba8b6] font-bold py-2 sm:py-2.5 text-xs sm:text-sm">M-</button>
+                        <button data-action="clear-entry" class="btn-tactile bg-[#353a40] text-amber-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">CE</button>
+                        <button data-action="clear-all" class="btn-tactile bg-[#353a40] text-rose-400 font-bold py-2 sm:py-2.5 text-xs sm:text-sm">AC</button>
+                    </div>
 
-            btn.disabled = true;
+                    <!-- Row 2: Advanced Scientific Functions 1 -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-func="sin" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">sin</span>
+                        </button>
+                        <button data-func="cos" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">cos</span>
+                        </button>
+                        <button data-func="tan" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">tan</span>
+                        </button>
+                        <button data-func="ln" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">ln</span>
+                        </button>
+                        <button data-func="log10" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">log</span>
+                        </button>
+                        <button data-action="delete" class="btn-tactile bg-[#353a40] text-neutral-200 font-bold py-2.5 text-xs sm:text-sm">DEL</button>
+                    </div>
 
-            diceElements.forEach(el => el.classList.add("rolling"));
+                    <!-- Row 3: Advanced Scientific Functions 2 -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-func="sqr" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">x²</span>
+                        </button>
+                        <button data-operator="pow" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">x^y</span>
+                        </button>
+                        <button data-func="sqrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">√x</span>
+                        </button>
+                        <button data-func="cbrt" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">
+                            <span class="func-primary">∛x</span>
+                        </button>
+                        <button data-func="fact" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">n!</button>
+                        <button data-operator="mod" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">MOD</button>
+                    </div>
 
-            let counter = 0;
-            const interval = setInterval(() => {
-                diceElements.forEach(el => {
-                    el.textContent = Math.floor(Math.random() * 6) + 1;
-                });
-                counter++;
-                if (counter > 5) {
-                    clearInterval(interval);
-                }
-            }, 60);
+                    <!-- Row 4: Keypad Digits & Arithmetic 1 -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-const="pi" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">π</button>
+                        <button data-const="e" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">e</button>
+                        <button data-number="7" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">7</button>
+                        <button data-number="8" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">8</button>
+                        <button data-number="9" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">9</button>
+                        <button data-operator="/" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">÷</button>
+                    </div>
 
-            setTimeout(() => {
-                let soucet = 0;
-                const vysledky = [];
+                    <!-- Row 5: Keypad Digits & Arithmetic 2 -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-action="paren-open" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">(</button>
+                        <button data-action="paren-close" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">)</button>
+                        <button data-number="4" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">4</button>
+                        <button data-number="5" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">5</button>
+                        <button data-number="6" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">6</button>
+                        <button data-operator="*" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">×</button>
+                    </div>
 
-                diceElements.forEach(el => {
-                    const cislo = Math.floor(Math.random() * 6) + 1;
-                    el.textContent = cislo;
-                    el.classList.remove("rolling");
-                    vysledky.push(cislo);
-                    soucet += cislo;
-                });
+                    <!-- Row 6: Keypad Digits & Arithmetic 3 -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-func="abs" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">|x|</button>
+                        <button data-func="inv" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-2.5 text-xs sm:text-sm">1/x</button>
+                        <button data-number="1" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">1</button>
+                        <button data-number="2" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">2</button>
+                        <button data-number="3" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">3</button>
+                        <button data-operator="-" class="btn-tactile bg-[#d9531e] text-white font-bold py-3 text-base">−</button>
+                    </div>
 
-                btn.disabled = false;
-
-                if (diceElements.length > 1) {
-                    resultSum.textContent = `Součet: ${soucet}`;
-                } else {
-                    resultSum.textContent = "";
-                }
-
-                // Aktualizace statistik
-                celkovyPocetHodů++;
-                celkovySoucet += soucet;
-                document.getElementById("totalRolls").textContent = celkovyPocetHodů;
-                document.getElementById("avgSum").textContent = (celkovySoucet / celkovyPocetHodů).toFixed(1);
-
-                // Přidání do historie
-                const li = document.createElement("li");
-                li.textContent = vysledky.join(" + ") + (diceElements.length > 1 ? ` = ${soucet}` : "");
-                historyList.insertBefore(li, historyList.firstChild);
-
-                if (historyList.children.length > 10) {
-                    historyList.removeChild(historyList.lastChild);
-                }
-            }, 400);
-        }
-
-        function vynulovat() {
-            celkovyPocetHodů = 0;
-            celkovySoucet = 0;
-            document.getElementById("totalRolls").textContent = "0";
-            document.getElementById("avgSum").textContent = "0";
-            document.getElementById("historyList").innerHTML = "";
-            document.getElementById("resultSum").textContent = "";
-            
-            const diceElements = document.querySelectorAll(".dice");
-            diceElements.forEach(el => el.textContent = "?");
-        }
-    </script>
-<a href="dva.html" style="
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #f67c5f 0%, #edc22e 100%);
-  color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  box-shadow: 0 4px 15px rgba(246, 124, 95, 0.3);
-  transition: all 0.25s ease;
-" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(246, 124, 95, 0.4)'" 
-   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(246, 124, 95, 0.3)'">
-  🎮 Play 2048
-</a>
-<a href="calc.html" style="
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #f67c5f 0%, #edc22e 100%);
-  color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  box-shadow: 0 4px 15px rgba(246, 124, 95, 0.3);
-  transition: all 0.25s ease;
-" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 20px rgba(246, 124, 95, 0.4)'" 
-   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(246, 124, 95, 0.3)'">
-  really useful calculator!!!1!!!
-</a>
-</body>
-</html>
+                    <!-- Row 7: Bottom Action Row -->
+                    <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+                        <button data-action="toggle-sign" class="btn-tactile bg-[#353a40] text-[#b0b8c0] font-bold py-3 text-sm">±</button>
+                        <button data-number="0" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">0</button>
+                        <button data-action="decimal" class="btn-tactile bg-[#2a2d32] text-[#e1e4e8] font-bold py-3 text-base">.</button>
+                        <button data-operator="+"
